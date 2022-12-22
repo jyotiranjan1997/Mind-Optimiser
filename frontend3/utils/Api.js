@@ -1,2 +1,1 @@
-
-export const backend_api = "";
+export const backend_api = "https://sapphire-bull-robe.cyclic.app";
