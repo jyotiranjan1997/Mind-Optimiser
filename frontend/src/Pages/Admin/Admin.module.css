@@ -1,0 +1,64 @@
+.AdminSidebar {
+  width: 20%;
+  padding: 2%;
+  border: 1px solid grey;
+  background-color: rgb(29, 81, 158);
+  color: white;
+  text-align: center;
+}
+.AdminRightebar {
+  width: 80%;
+  padding: 30px;
+  background-color: rgb(58, 104, 96);
+}
+
+.userContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+.line {
+  position: relative;
+  top: 0px;
+  border: none;
+  width: 100%;
+  height: 1px;
+  background: rgb(172, 129, 129);
+  margin-bottom: 30px;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 35px;
+ 
+  
+}
+
+.pagination2{
+display: flex;
+ border: 1px solid rgb(102, 100, 100);
+  padding: 10px 5px 10px 5px;
+  gap:10px;
+  border-radius: 8px;
+ 
+
+}
+
+.handlePoint:hover {
+  cursor: pointer;
+  background-color: rgb(60, 153, 125);
+}
+
+
+@media screen and (max-width:600px) and (min-width:300px)  {
+
+  .AdminRightebar {
+ padding: 5px;
+ padding-top: 15px;
+ 
+
+}
+  
+}
