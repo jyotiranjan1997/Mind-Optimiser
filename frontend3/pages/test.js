@@ -4,7 +4,7 @@ import Test from "../Components/Test/Test";
 export default function test() {
   return (
     <div>
-      <Test/>
+      {/* <Test/> */}
     </div>
   );
 }

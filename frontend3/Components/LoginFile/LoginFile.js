@@ -3,85 +3,69 @@ import { FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { ImFacebook } from "react-icons/im";
 import { MdLockOutline } from "react-icons/md";
 import { useToast } from "@chakra-ui/react";
+import { SET_LOCAL } from "../../utils/loacldata";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import Loading from "../Components/Loading";
 import swal from "sweetalert";
+import Loading from "../Loading";
 
-export default function Signup() {
+export default function Login() {
   const router = useRouter();
 
   const [isAuth, setAuth] = useState(false);
   const [token, setToken] = useState("");
+  const toast = useToast();
 
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCreate = (e) => {
+  useEffect(() => {}, [token]);
+
+  const handleLogin = (e) => {
     e.preventDefault();
+
     const payload = {
-      firstName,
-      lastName,
       email,
       password,
     };
+    setAuth(true);
+    fetch("https://sapphire-bull-robe.cyclic.app/users/login", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        SET_LOCAL("psctoken", res.token);
+        setAuth(false);
+        if (res.token) {
+          swal({
+            title: "Login Successfully!",
+            text: "Go to main Home page!",
+            icon: "success",
+            button: "ok",
+          }).then(() => router.push("/"));
+        } else {
+          swal({
+            title: "Login Failed!",
+            text: "Try again!",
+            icon: "error",
+            button: "ok",
+          });
+        }
+      })
+      .catch((er) => {
+        setAuth(false);
+        swal({
+          title: "Login Failed!",
+          text: "",
+          icon: "error",
+          button: "ok",
+        });
+      });
   };
-
-  useEffect(() => {
-    
-  },[isAuth])
-
- const Signup = (e) => {
-   e.preventDefault();
-
-   const payload = {
-     firstName,
-     lastName,
-     email,
-     phone,
-     password,
-   };
-   setAuth(true);
-   fetch("https://sapphire-bull-robe.cyclic.app/users/signup", {
-     method: "POST",
-     body: JSON.stringify(payload),
-     headers: {
-       "Content-Type": "application/json",
-     },
-   })
-     .then((res) => res.json())
-     .then((res) => {
-       console.log(res);
-       setAuth(false);
-       if (res.message=="Signup successful") {
-         swal({
-           title: "Signup Successfully!",
-           text: "Go to main Home page!",
-           icon: "success",
-           button: "ok",
-         }).then(() => router.push("/login"));
-       } else {
-         swal({
-           title: "Signup Failed!",
-           text: "Try again!",
-           icon: "error",
-           button: "ok",
-         });
-       }
-     })
-     .catch((er) => {
-       setAuth(false);
-       swal({
-         title: "Signup Failed!",
-         text: "",
-         icon: "error",
-         button: "ok",
-       });
-     });
- };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2 bg-gray-100">
@@ -90,7 +74,7 @@ export default function Signup() {
       ) : (
         <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
           <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
-            <div className="w-4/5 p-5">
+            <div className="w-3/5 p-5">
               <div className="text-left font-bold">
                 <span className="text-green-500">Comapany</span> logo
               </div>
@@ -100,7 +84,7 @@ export default function Signup() {
                 </h1>
                 <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
 
-                {/* soz`cial section */}
+                {/* social section */}
                 <div className="flex justify-center my-2">
                   <a
                     href="#"
@@ -126,28 +110,6 @@ export default function Signup() {
                   <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
                     <FaRegEnvelope className="text-gray-400 m-2" />
                     <input
-                      type="text"
-                      name="firstName"
-                      placeholder="First name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="bg-gray-100 outline-none text-sm flex-1"
-                    />
-                  </div>
-                  <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                    <FaRegEnvelope className="text-gray-400 m-2" />
-                    <input
-                      type="text"
-                      name="LastName"
-                      placeholder="Last Name"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="bg-gray-100 outline-none text-sm flex-1"
-                    />
-                  </div>
-                  <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                    <FaRegEnvelope className="text-gray-400 m-2" />
-                    <input
                       type="email"
                       name="email"
                       placeholder="Email"
@@ -159,17 +121,6 @@ export default function Signup() {
                   <div className="bg-gray-100 w-64 p-2 flex items-center">
                     <MdLockOutline className="text-gray-400 mr-2" />
                     <input
-                      type="number"
-                      name="phone"
-                      placeholder="Enter phone Number"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="bg-gray-100 outline-none text-sm flex-1"
-                    />
-                  </div>
-                  <div className="bg-gray-100 w-64 p-2 m-2 flex items-center">
-                    <MdLockOutline className="text-gray-400 mr-2" />
-                    <input
                       type="password"
                       name="passsword"
                       placeholder="Password"
@@ -178,11 +129,20 @@ export default function Signup() {
                       className="bg-gray-100 outline-none text-sm flex-1"
                     />
                   </div>
+                  <div className="flex justify-between w-64 mb-5">
+                    <label className="flex item-center text-xs">
+                      <input type="checkbox" name="remember" className="mr-1" />{" "}
+                      Remember me
+                    </label>
+                    <a href="#" className="text-xs">
+                      Forgot Password
+                    </a>
+                  </div>
                   <button
-                    onClick={Signup}
+                    onClick={handleLogin}
                     className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
                   >
-                    Sign Up
+                    Sign In
                   </button>
                 </div>
               </div>
@@ -195,6 +155,12 @@ export default function Signup() {
               <p className="mb-10">
                 Fill up personal information and start journey with us.
               </p>
+              <a
+                href="/signup"
+                className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-green-500"
+              >
+                Sign Up
+              </a>
             </div>
           </div>
         </main>

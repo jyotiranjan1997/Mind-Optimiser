@@ -1,10 +1,10 @@
 import React from "react";
-import Login from "../Components/Login/Login";
+import LoginFile from "../Components/LoginFile/LoginFile";
 
-export default function Login1() {
+export default function Login() {
   return (
     <div>
-     <Login/>
+      <LoginFile />
     </div>
   );
 }
