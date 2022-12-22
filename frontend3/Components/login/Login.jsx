@@ -1,9 +1,87 @@
-
+import { useEffect, useState } from "react";
 import { FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { ImFacebook } from "react-icons/im";
 import { MdLockOutline } from "react-icons/md";
+import { useToast } from "@chakra-ui/react";
+import { SET_LOCAL } from "../../utils/loacldata";
 
-export default function Login(){
+export default function Login() {
+
+  const [isAuth, setAuth] = useState(false);
+  const [token, setToken] = useState("");
+  const toast = useToast();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+
+
+
+  const handleLogout = () => {
+    if (isAuth) {
+      setAuth(!isAuth);
+      setToken("");
+    }
+  };
+  useEffect(() => {
+    if (token) {
+      setAuth(true);
+      navigate("/");
+    }
+  }, [token]);
+
+
+
+  const handleCreate = () => {
+    const payload = {
+      firstName,
+        lastName,
+        email,
+        phone,
+        password
+    };
+  }
+
+
+  const handleLogin = () => {
+    const payload = {
+      email,
+      password,
+    };
+
+    fetch("https://sapphire-bull-robe.cyclic.app/users/login", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        SET_LOCAL("psctoken",res.token)
+        if (res.token) {
+          setToken(res.token);
+          toast({
+            title: "Login Successfull",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          alert(" wrong credentials");
+          toast({
+            title: "Login fail",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            color: "red",
+          });
+        }
+      })
+      .catch((er) => console.log(er));
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2 bg-gray-100">
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
@@ -47,6 +125,8 @@ export default function Login(){
                     type="email"
                     name="email"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-100 outline-none text-sm flex-1"
                   />
                 </div>
@@ -56,6 +136,8 @@ export default function Login(){
                     type="password"
                     name="passsword"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-gray-100 outline-none text-sm flex-1"
                   />
                 </div>
@@ -69,7 +151,8 @@ export default function Login(){
                   </a>
                 </div>
                 <a
-                  href="#"
+                  href="/"
+                  onClick={handleLogin}
                   className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
                 >
                   Sign In
@@ -83,10 +166,10 @@ export default function Login(){
             <h2 className="text-3xl font-bold mb-2">Hello, Friends</h2>
             <div className="border-2 w-10 border-white inline-block mb-2"></div>
             <p className="mb-10">
-              Fill up perssonal information and start journey with us.
+              Fill up personal information and start journey with us.
             </p>
             <a
-              href="#"
+              href="/signup"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-green-500"
             >
               Sign Up
@@ -96,6 +179,4 @@ export default function Login(){
       </main>
     </div>
   );
-};
-
-
+}
