@@ -1,10 +1,11 @@
 import Footer from "../Components/Footer/Footer";
 import Navbar from "../Components/Navbar/Navbar";
+import { ChakraProvider } from "@chakra-ui/react";
 
 
 export default function App({ Component, pageProps }) {
 
-  return (<div>
+  return (<ChakraProvider>
     <nav>
       <Navbar/>
     </nav>
@@ -12,5 +13,8 @@ export default function App({ Component, pageProps }) {
     <footer>
       <Footer/>
     </footer>
-    </div>)
+
+
+  </ChakraProvider>
+    )
 }
