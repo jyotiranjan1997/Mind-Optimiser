@@ -3,10 +3,13 @@ import { FaLinkedinIn, FaGoogle, FaRegEnvelope } from "react-icons/fa";
 import { ImFacebook } from "react-icons/im";
 import { MdLockOutline } from "react-icons/md";
 import { useToast } from "@chakra-ui/react";
-
+import { useRouter } from 'next/navigation';
+import axios from "axios"
 
 
 export default function Signup() {
+    const router = useRouter();
+
   const [isAuth, setAuth] = useState(false);
   const [token, setToken] = useState("");
 
@@ -38,18 +41,9 @@ export default function Signup() {
 
     console.log(payload);
 
-    fetch("https://sapphire-bull-robe.cyclic.app/users/signup", {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-
-      })
+    axios.post("https://sapphire-bull-robe.cyclic.app/users/signup",payload)
+      .then((res)=>console.log(res))
+   
       .catch((er) => console.log(er));
   };
 
@@ -67,7 +61,7 @@ export default function Signup() {
               </h1>
               <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
 
-              {/* social section */}
+              {/* soz`cial section */}
               <div className="flex justify-center my-2">
                 <a
                   href="#"
