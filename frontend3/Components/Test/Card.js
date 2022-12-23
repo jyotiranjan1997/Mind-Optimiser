@@ -1,7 +1,8 @@
 import { Flex,Heading,Image, Text } from "@chakra-ui/react";
 import React from "react";
 
-export default function Card({image,name,data,rating}) {
+export default function Card({ image, name, rating }) {
+  const data = "";
     return (
       <div>
         <div class="flex justify-center">

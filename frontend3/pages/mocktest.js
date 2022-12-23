@@ -4,7 +4,9 @@ import TestSeriese from "../Components/TestSeresie";
 import swal from "sweetalert";
 
 import styles from "../styles/Timer.module.css";
-import { SSC_DATA } from "../utils/loacldata";
+import { GET_LOCAL, SSC_DATA } from "../utils/loacldata";
+import { useRouter } from "next/router";
+import axios from "axios";
 const IntialState = {
   q1: "",
   q2: "",
@@ -20,9 +22,9 @@ const IntialState = {
 
 export default function mocktest() {
   const [data, setData] = useState(IntialState);
-  const [miniute, setMiniute] = useState(10);
+  const [miniute, setMiniute] = useState(9);
   const [second, setSecond] = useState(60);
-
+const router=useRouter()
   const timerId = useRef();
 
   const handleChange = (e) => {
@@ -30,11 +32,28 @@ export default function mocktest() {
     console.log(name, value);
     setData({ ...data, [name]: value });
   };
+
+let token;
+if (typeof window !== "undefined") {
+  token = GET_LOCAL("psctoken");
+} else {
+  token = "";
+}
+
+  const mock_post = async () => {
+    let payload={name:"SSC",quantity:1}
+  await axios
+    .post("https://sapphire-bull-robe.cyclic.app/userdata",payload, {
+      headers: { token: `Babel ${token}` },
+    })
+    .then((res) => console.log(res));
+}
+
   const handleMock = (e) => {
     e.preventDefault();
     stopTimer();
     const final = handleScore();
-
+   mock_post()
     swal({
       title: "Good job!",
       text: "Your Test Submitted Successfully!",
@@ -44,14 +63,14 @@ export default function mocktest() {
         title: `Your Score is ${final}`,
         text: "",
         icon: "success",
-      });
+      }).then(()=>router.push("/test"))
     });
   };
 
   const TimeUp = () => {
     stopTimer();
     const final = handleScore();
-
+mock_post()
     swal({
       title: "Time Up!",
       text: "Your Test Submitted Automatically!",
@@ -61,7 +80,7 @@ export default function mocktest() {
         title: `Your Score is ${final}`,
         text: "",
         icon: "success",
-      });
+      }).then(() => router.push("/test"));
     });
   };
 
@@ -107,6 +126,15 @@ export default function mocktest() {
             {second > 10 ? second : `0${second}`}
           </Heading>
         </div>
+
+       <Flex justifyContent="center" p="5" >  
+          <Heading> MOCK TEST </Heading>
+        </Flex>
+
+         <Flex justifyContent="center" p="2" > 
+        <Text>Please Read the Question carefully & Attempt all questions between this Time limit.</Text></Flex>
+       <Flex justifyContent="center" p="2" >  <Text>Otherwise It will automatically submitted .</Text></Flex>
+       <Flex justifyContent="center" p="2" >  <Text>Good Luck !</Text></Flex>
 
         <Box mt="5%">
           <form onSubmit={handleMock}>
@@ -250,6 +278,8 @@ export default function mocktest() {
                 type="submit"
                 bgColor="green.400"
                 w={["35%", "30%", "25%", "10%"]}
+                mb="10px"
+                cursor="pointer"
               />
             </Flex>
           </form>

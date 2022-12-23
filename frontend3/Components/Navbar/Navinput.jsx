@@ -60,10 +60,10 @@ export default function Navinput(){
 
   return (
     <>
-      <InputGroup width="440px" className={styles.medianavinput}>
+      <InputGroup width="450px" className={styles.medianavinput}>
         
         <Box>
-          <Input
+          {/* <Input
             size="lg"
             focusBorderColor="#08bd80"
             color="grey"
@@ -83,10 +83,39 @@ export default function Navinput(){
                 background: "white",
                 color: "#08bd80",
               }}
+              
             >
               <FaSearch />
             </Button>
-          </InputRightElement>
+          </InputRightElement> */}
+          <InputGroup size='md'>
+      <Input
+        pr='13rem'
+       
+        focusBorderColor="#08bd80"
+            color="grey"
+            placeholder="Enter Your Search Here"
+            onChange={(e) => handleText(e.target.value)}
+            value={q}
+        
+       
+      />
+      <InputRightElement width='3rem'>
+      <Button
+              h="2rem"
+              size="sm"
+              color="white"
+              bg="#08bd80"
+              _hover={{
+                background: "white",
+                color: "#08bd80",
+              }}
+              
+            >
+              <FaSearch />
+            </Button>
+      </InputRightElement>
+    </InputGroup>
           <div className={suggestion.length>0 ? styles.suggestion : null}>
             {suggestion.length > 0
               ? suggestion.map((item, index) => {
