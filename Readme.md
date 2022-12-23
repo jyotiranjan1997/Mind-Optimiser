@@ -1,4 +1,4 @@
-# Mind Optimiser
+# DIGI PATHSHALA
 
 ## About
 
