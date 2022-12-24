@@ -38,6 +38,7 @@
 - Chakra-UI
 - Tailwind 
 - framer-motion
+- Chat with admin
 - react-router-dom
 - React Redux
 
